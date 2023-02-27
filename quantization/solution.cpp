@@ -25,8 +25,8 @@ int main()
         sum[0] = sqrSum[0] = 0;
         for (int n = 1; n <= N; n++)
         {
-            sum[n] = sum[n - 1] + arr[n];
-            sqrSum[n] = sqrSum[n - 1] + arr[n] * arr[n];
+            sum[n] = sum[n - 1] + arr[n - 1];
+            sqrSum[n] = sqrSum[n - 1] + arr[n - 1] * arr[n - 1];
         }
 
         clearCache();
@@ -45,7 +45,7 @@ void clearCache()
 
 int dp(int sect, int idx)
 {
-    if (idx == N)
+    if (idx == N + 1)
         return 0;
     if (sect == S)
         return 987654321;
@@ -55,7 +55,7 @@ int dp(int sect, int idx)
         return ret;
 
     ret = 987654321;
-    for (int size = 1; size + idx <= N; size++)
+    for (int size = 1; size + idx <= N + 1; size++)
         ret = std::min(ret, calcVar(idx, size + idx) + dp(sect + 1, size + idx));
 
     return ret;
@@ -63,8 +63,13 @@ int dp(int sect, int idx)
 
 int calcVar(int st, int en)
 {
+    int a = (double)(sum[en - 1] - sum[st - 1]) / (en - st) + 0.5;
     int ret = sqrSum[en - 1] - sqrSum[st - 1];
-    ret -= (sum[en - 1] - sum[st - 1]) * (sum[en - 1] - sum[st - 1]) / (en - st);
+    ret -= 2 * (sum[en - 1] - sum[st - 1]) * a;
+    ret += a * a * (en - st);
+
+    if (ret < 0)
+        throw;
 
     return ret;
 }
