@@ -2,6 +2,7 @@
 #include <utility>
 #include <queue>
 #include <cstring>
+#include <bits/stdc++.h>
 
 int H, W;
 int ans;
@@ -11,11 +12,13 @@ std::pair<int, int> dir[4] = {
     std::pair(-1, 0), std::pair(1, 0), std::pair(0, -1), std::pair(0, 1)};
 
 bool isPossible();
-void calc();
 void setup(std::pair<int, int> spot);
 
 int main()
 {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
     std::cin >> H >> W;
 
     for (int h = 0; h < H; h++)
@@ -29,7 +32,18 @@ int main()
     }
 
     ans = 0;
-    calc();
+    for (int h = 0; h < H; h++)
+        for (int w = 0; w < W; w++)
+        {
+            if (map[h][w] == 0)
+                continue;
+
+            if (!(h + 1 != H && map[h + 1][w] >= map[h][w]) &&
+                !(w + 1 != W && map[h][w + 1] >= map[h][w]))
+                ans++;
+
+            setup(std::pair(h, w));
+        }
     std::cout << ans << std::endl;
 
     return 0;
@@ -57,27 +71,6 @@ bool isPossible()
         }
 
     return true;
-}
-
-void calc()
-{
-    // find unchecked brightest spot
-    std::pair<int, int> brightest = std::pair(0, 0);
-    for (int h = 0; h < H; h++)
-        for (int w = 0; w < W; w++)
-            if (map[brightest.first][brightest.second] < map[h][w])
-                brightest = std::pair(h, w);
-
-    // if all lights already setted up
-    if (map[brightest.first][brightest.second] == 0)
-        return;
-
-    // setup light
-    setup(brightest);
-    ans++;
-
-    // repeat until all lights setted up
-    calc();
 }
 
 void setup(std::pair<int, int> spot)
