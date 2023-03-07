@@ -108,6 +108,9 @@ void setup(std::pair<int, int> spot)
             continue;
         }
 
+        if (map[now.first][now.second] > light - cnt)
+            continue;
+
         if (map[now.first][now.second] == light - cnt)
             map[now.first][now.second] = 0;
 
