@@ -46,6 +46,9 @@ CF()
 
     CNT=`expr $CNT - 1`
   done
+
+  cat ./$2$1/input1.txt > $2$1/input.txt
+  touch ./$2$1/solution.cpp
 }
 
 # only codeforces is supported yet
