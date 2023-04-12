@@ -4,54 +4,54 @@
 
 struct city
 {
-    int child;
-    int depth;
+    int value;
     std::list<int> carr;
 };
 
 int N, K;
 city narr[200'001];
 
-void step(int now, int pre);
+int step(int now, int pre, int depth);
 
 int main()
 {
-    std::cin >> N >> K;
+    scanf("%d %d", &N, &K);
     for (int n = 1; n < N; n++)
     {
         int a, b;
-        std::cin >> a >> b;
+        scanf("%d %d", &a, &b);
 
         narr[a].carr.push_back(b);
         narr[b].carr.push_back(a);
     }
 
-    narr[0].depth = -1;
-    step(1, 0);
+    step(1, 0, 0);
 
     std::sort(narr + 1, narr + N + 1, [](city a, city b)
-              { return (a.depth - a.child) > (b.depth - b.child); });
+              { return a.value > b.value; });
 
     long long ret = 0;
     for (int k = 1; k <= K; k++)
-        ret += (long long)narr[k].depth - narr[k].child;
+        ret += (long long)narr[k].value;
 
-    std::cout << ret << std::endl;
+    printf("%lli\n", ret);
 
     return 0;
 }
 
-void step(int now, int pre)
+int step(int now, int pre, int depth)
 {
-    narr[now].depth = narr[pre].depth + 1;
-    narr[now].child = 0;
+    int ret = 0;
 
     for (int nxt : narr[now].carr)
     {
         if (nxt == pre)
             continue;
 
-        step(nxt, now);
-        narr[now].child += narr[nxt].child + 1;
+        ret += step(nxt, now, depth + 1) + 1;
     }
+
+    narr[now].value = depth - ret;
+
+    return ret;
 }
