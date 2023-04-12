@@ -28,18 +28,18 @@ CF()
     mkdir $2$1
   fi
 
-  CNT=`echo $EXAMPLES | xmllint --html --xpath "count(//div[@class=\"input\"])" - 2>/dev/null`
+  CNT=`echo "$EXAMPLES" | xmllint --html --xpath "count(//div[@class=\"input\"])" - 2>/dev/null`
 
   while [ $CNT -gt 0 ]
   do
-    echo $EXAMPLES | \
+    echo "$EXAMPLES" | \
       xmllint --html --xpath "//div[@class=\"input\"][$CNT]/pre" - 2>/dev/null | \
-      sed "s/<\/\?pre>//g" | \
-      sed "s/<br\/>/\\n/g" \
+      sed -r "s/<\/?pre>|<div[^>]*>//g" | \
+      sed -r "s/<br\/>|<\/div>/\\n/g" \
     > ./$2$1/input$CNT.txt 
     truncate -s -1 ./$2$1/input$CNT.txt
 
-    echo $EXAMPLES | \
+    echo "$EXAMPLES" | \
       xmllint --html --xpath "//div[@class=\"output\"][$CNT]/pre" - 2>/dev/null | \
       sed "s/<\/\?pre>//g" | \
       sed "s/<br\/>/\\n/g" \
