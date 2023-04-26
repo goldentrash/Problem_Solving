@@ -14,7 +14,8 @@ fi
 
 CF()
 {
-  EXAMPLES=`curl "https://codeforces.com/problemset/problem/$1/$2" | \
+  SOURCE="https://codeforces.com/problemset/problem/$1/$2"
+  EXAMPLES=`curl ${SOURCE} | \
     xmllint --html --xpath //div[@class=\"sample-test\"] - 2>/dev/null`
   
   if [ -z "$EXAMPLES" ]
@@ -50,7 +51,7 @@ CF()
   done
 
   cat ./$2$1/input1.txt > $2$1/input.txt
-  touch ./$2$1/solution.cpp
+  echo "// $SOURCE" > ./$2$1/solution.cpp
 }
 
 # only codeforces is supported yet
