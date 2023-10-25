@@ -1,6 +1,24 @@
 # Practice PS
 
-### Online Judge Site Profiles
+## Recommendations
+
+### shortcut
+
+highly recommend using shourtcut to test your solution.
+
+```cpp
+// vscode keybindings.json
+[
+  {
+    "key": "ctrl+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "test active cpp solution"
+  }
+]
+
+```
+
+## Online Judge Site Profiles
 
 [CodeForces Profile](https://codeforces.com/profile/whitepianow)
 
