@@ -18,8 +18,12 @@ int main()
         std::cin >> n[i] >> o[i];
     std::cin >> n[N - 1];
 
+    // edge case
     if (N == 1)
-        return n[0];
+    {
+        std::cout << n[0] << std::endl;
+        return 0;
+    }
 
     // base
     dp_max[0] = dp_min[0] = n[0];
