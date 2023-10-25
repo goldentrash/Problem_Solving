@@ -4,8 +4,8 @@
 #define FOR(i, st, en) for (int i = st; i < en; i++)
 
 int C, N, M;
-long nArr[101] = {INT64_MIN},
-     mArr[101] = {INT64_MIN};
+long long nArr[101] = {INT64_MIN},
+          mArr[101] = {INT64_MIN};
 int cache[101][101];
 
 int calcLis(int ni, int mi);
