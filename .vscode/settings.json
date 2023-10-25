@@ -51,5 +51,6 @@
     "sstream": "cpp",
     "cstring": "cpp",
     "list": "cpp"
-  }
+  },
+  "editor.defaultFormatter": "ms-vscode.cpptools"
 }
