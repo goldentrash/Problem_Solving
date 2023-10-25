@@ -6,43 +6,43 @@ BAEKJOON() {
   # Fetch examples
   SOURCE="https://www.acmicpc.net/problem/$PROBLEM"
 
-  # echo $(curl $SOURCE) => 403 Forbidden
+  EXAMPLES=$(
+    curl --header "User-Agent: Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0" $SOURCE \
+      | xmllint --html --xpath //div[@id=\"problem-body\"] - 2> /dev/null
+  )
 
-  # EXAMPLES=$(
-  #   curl $SOURCE \
-  #     | xmllint --html --xpath //div[@id=\"problem-body\"] - 2> /dev/null
-  # )
+  # Error if no data
+  if [ -z "$EXAMPLES" ]; then
+    echo 1>&2 "there's no data. Are you sure it's $PROBLEM?"
+    exit 2
+  fi
 
-  # # Error if no data
-  # if [ -z "$EXAMPLES" ]; then
-  #   echo 1>&2 "there's no data. Are you sure it's $PROBLEM?"
-  #   exit 2
-  # fi
+  # Check how many examples are provided
+  CNT=$(
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "count(//pre[@class=\"sampledata\"])" - 2> /dev/null
+  )
+  CNT=$(expr $CNT / 2)
 
-  # # Check how many examples are provided
-  # CNT=$(
-  #   echo "$EXAMPLES" \
-  #     | xmllint --html --xpath "count(//pre[@class=\"sampledata\"])" - 2> /dev/null
-  # )
-  # CNT=$(expr $CNT / 2)
+  # Write examples (input & output)
+  while [ $CNT -gt 0 ]; do
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "//section[@id=\"sampleinput$CNT\"]/pre" - 2> /dev/null \
+      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>//g" \
+        > "./input$CNT.text"
+    truncate --size=-1 "./input$CNT.text"
 
-  # # Write examples (input & output)
-  # while [ $CNT -gt 0 ]; do
-  #   echo "$EXAMPLES" \
-  #     | xmllint --html --xpath "//section[@id=\"sampleinput$CNT\"]/pre" - 2> /dev/null \
-  #     | sed --regexp-extended "s/<\/?span>//g" \
-  #       > "./input$CNT.text"
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "//section[@id=\"sampleoutput$CNT\"]/pre" - 2> /dev/null \
+      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>//g" \
+        > "./output$CNT.text"
+    truncate --size=-1 "./output$CNT.text"
 
-  #   echo "$EXAMPLES" \
-  #     | xmllint --html --xpath "//section[@id=\"sampleoutput$CNT\"]/pre" - 2> /dev/null \
-  #     | sed --regexp-extended "s/<\/?span>//g" \
-  #       > "./output$CNT.text"
+    CNT=$(expr $CNT - 1)
+  done
 
-  #   CNT=$(expr $CNT - 1)
-  # done
-
-  # cat ./input1.text > ./input.text
-  # echo "// $SOURCE" > ./solution.cpp
+  cat ./input1.text > ./input.text
+  echo "// $SOURCE" > ./solution.cpp
 }
 
 CODE_FORCES() {
@@ -75,12 +75,14 @@ CODE_FORCES() {
       | sed --regexp-extended "s/<\/?pre>|<div[^>]*>//g" \
       | sed --regexp-extended "s/<br\/>|<\/div>/\\n/g" \
         > "./input$CNT.text"
+    truncate --size=-1 "./input$CNT.text"
 
     echo "$EXAMPLES" \
       | xmllint --html --xpath "//div[@class=\"output\"][$CNT]/pre" - 2> /dev/null \
-      | sed "s/<\/\?pre>//g" \
-      | sed "s/<br\/>/\\n/g" \
+      | sed --regexp-extended "s/<\/?pre>//g" \
+      | sed --regexp-extended "s/<br\/>/\\n/g" \
         > "./output$CNT.text"
+    truncate --size=-1 "./output$CNT.text"
 
     CNT=$(expr $CNT - 1)
   done
