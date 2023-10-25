@@ -3,8 +3,8 @@
 #include <list>
 
 int N;
-std::list<int> carr[100'000];
-bool visit[100'000];
+std::list<int> carr[100'001];
+bool visit[100'001];
 
 double dfs(int c);
 
