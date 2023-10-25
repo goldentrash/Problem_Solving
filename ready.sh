@@ -35,13 +35,13 @@ CF()
     echo $EXAMPLES | \
       xmllint --html --xpath "//div[@class=\"input\"][$CNT]/pre" - 2>/dev/null | \
       sed "s/<\/\?pre>//g" | \
-      sed "s/<br\/>/\\r\\n/g" \
+      sed "s/<br\/>/ /g" \
       > ./$2$1/input$CNT.txt
 
     echo $EXAMPLES | \
       xmllint --html --xpath "//div[@class=\"output\"][$CNT]/pre" - 2>/dev/null | \
       sed "s/<\/\?pre>//g" | \
-      sed "s/<br\/>/\\r\\n/g" \
+      sed "s/<br\/>/ /g" \
       > ./$2$1/output$CNT.txt
 
     CNT=`expr $CNT - 1`
