@@ -52,8 +52,8 @@ void calc()
     }
 
     int a = -1;
-    while (a < N)
-        if (!hasPair[++a])
+    while (++a < N)
+        if (!hasPair[a])
             break;
 
     hasPair[a] = true;
@@ -61,9 +61,9 @@ void calc()
 
     int b = a;
     bool *isConnedted = edge[a];
-    while (b < N)
+    while (++b < N)
     {
-        if (hasPair[++b] || !isConnedted[b])
+        if (hasPair[b] || !isConnedted[b])
             continue;
 
         hasPair[b] = true;
