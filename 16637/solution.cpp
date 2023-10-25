@@ -2,10 +2,12 @@
 #include <algorithm>
 
 int N;
-long long dp[19];
+long long dp_max[19];
+long long dp_min[19];
 long long n[19];
 char o[18];
 
+void swap(long long &a, long long &b);
 long long operate(long long a, long long b, char op);
 
 int main()
@@ -20,18 +22,36 @@ int main()
         return n[0];
 
     // base
-    dp[0] = n[0];
-    dp[1] = operate(dp[0], n[1], o[0]);
+    dp_max[0] = dp_min[0] = n[0];
+    dp_max[1] = dp_min[1] = operate(n[0], n[1], o[0]);
 
     // step
     for (int i = 2; i < N; i++)
     {
-        dp[i] = std::max(operate(dp[i - 1], n[i], o[i - 1]), operate(dp[i - 2], operate(n[i - 1], n[i], o[i - 1]), o[i - 2]));
+        long long noParnth_max = operate(dp_max[i - 1], n[i], o[i - 1]);
+        long long noParnth_min = operate(dp_min[i - 1], n[i], o[i - 1]);
+
+        long long curParnth = operate(n[i - 1], n[i], o[i - 1]);
+        long long parnth_max = operate(dp_max[i - 2], curParnth, o[i - 2]);
+        long long parnth_min = operate(dp_min[i - 2], curParnth, o[i - 2]);
+        // IF curParenthese < 0 && o[i - 2] == '*'
+        if (parnth_max < parnth_min)
+            swap(parnth_max, parnth_min);
+
+        dp_max[i] = std::max(noParnth_max, parnth_max);
+        dp_min[i] = std::min(noParnth_min, parnth_min);
     }
 
-    std::cout << dp[N - 1] << std::endl;
+    std::cout << dp_max[N - 1] << std::endl;
 
     return 0;
+}
+
+void swap(long long &a, long long &b)
+{
+    a = a ^ b;
+    b = b ^ a;
+    a = a ^ b;
 }
 
 long long operate(long long a, long long b, char op)
