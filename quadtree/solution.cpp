@@ -27,6 +27,7 @@ int main()
         Node *root = makeTree();
         cursor = 0;
         printTree(root);
+        ret[cursor] = 0;
         std::cout << ret << std::endl;
     }
 
