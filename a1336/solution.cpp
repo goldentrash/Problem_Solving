@@ -32,9 +32,9 @@ int main()
     std::sort(narr + 1, narr + N + 1, [](city a, city b)
               { return (a.depth - a.child) > (b.depth - b.child); });
 
-    int ret = 0;
+    long long ret = 0;
     for (int k = 1; k <= K; k++)
-        ret += narr[k].depth - narr[k].child;
+        ret += (long long)narr[k].depth - narr[k].child;
 
     std::cout << ret << std::endl;
 
