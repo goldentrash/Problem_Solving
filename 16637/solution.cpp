@@ -2,10 +2,10 @@
 #include <algorithm>
 
 int N;
-long long dp_max[19];
-long long dp_min[19];
-long long n[19];
-char o[18];
+long long dp_max[10];
+long long dp_min[10];
+long long n[10];
+char o[9];
 
 void swap(long long &a, long long &b);
 long long operate(long long a, long long b, char op);
