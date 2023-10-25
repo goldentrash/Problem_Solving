@@ -8,6 +8,7 @@
       "cwd": "${fileDirname}",
       "preLaunchTask": "build active cpp solution",
       "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "args": ["<", "input.txt"],
       "logging": {
         "exceptions": true,
         "moduleLoad": true,
