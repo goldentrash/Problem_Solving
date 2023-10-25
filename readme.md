@@ -1,5 +1,15 @@
 # Practice PS
 
+## Usage
+
+### codeforces
+
+`$ ./ready.sh cf 721 c`
+
+### baekjoon
+
+`$ ./ready.sh boj 29156`
+
 ## Recommendations
 
 ### shortcut
