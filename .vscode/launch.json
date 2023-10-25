@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug cpp",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "build active cpp solution",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "logging": {
+        "exceptions": true,
+        "moduleLoad": true,
+        "programOutput": true
+      }
+    }
+  ]
+}
