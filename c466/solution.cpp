@@ -4,7 +4,7 @@ int N;
 int arr[500'000];
 long long pSum[500'001];
 int cnt[500'001];
-int ans;
+long long ans;
 
 int main()
 {
