@@ -2,11 +2,11 @@
 #include <algorithm>
 
 int N;
-int dp[19];
-int n[19];
+long long dp[19];
+long long n[19];
 char o[18];
 
-int operate(int a, int b, char op);
+long long operate(long long a, long long b, char op);
 
 int main()
 {
@@ -34,7 +34,7 @@ int main()
     return 0;
 }
 
-int operate(int a, int b, char op)
+long long operate(long long a, long long b, char op)
 {
     switch (op)
     {
