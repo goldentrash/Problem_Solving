@@ -28,20 +28,19 @@ BAEKJOON() {
   while [ $CNT -gt 0 ]; do
     echo "$EXAMPLES" \
       | xmllint --html --xpath "//section[@id=\"sampleinput$CNT\"]/pre" - 2> /dev/null \
-      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>//g" \
+      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>|&#13;//g" \
         > "./input$CNT.text"
     truncate --size=-1 "./input$CNT.text"
 
     echo "$EXAMPLES" \
       | xmllint --html --xpath "//section[@id=\"sampleoutput$CNT\"]/pre" - 2> /dev/null \
-      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>//g" \
+      | sed --regexp-extended "s/<\/?span>|<pre[^>]*>|<\/pre>|&#13;//g" \
         > "./output$CNT.text"
     truncate --size=-1 "./output$CNT.text"
 
     CNT=$(expr $CNT - 1)
   done
 
-  cat ./input1.text > ./input.text
   echo "// $SOURCE" > ./solution.cpp
 }
 
@@ -87,7 +86,6 @@ CODE_FORCES() {
     CNT=$(expr $CNT - 1)
   done
 
-  cat ./input1.text > ./input.text
   echo "// $SOURCE" > ./solution.cpp
 }
 
@@ -131,5 +129,17 @@ case $PLATFORM in
     ;;
 esac
 echo
+
+cat ./input1.text > ./input.text
+
+echo "" >> ./solution.cpp
+echo "#include <iostream>" >> ./solution.cpp
+echo "" >> ./solution.cpp
+echo "using namespace std;" >> ./solution.cpp
+echo "" >> ./solution.cpp
+echo "int main()" >> ./solution.cpp
+echo "{" >> ./solution.cpp
+echo "  return 0;" >> ./solution.cpp
+echo "}" >> ./solution.cpp
 
 exit 0
