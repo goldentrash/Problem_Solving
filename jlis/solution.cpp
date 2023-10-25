@@ -38,7 +38,7 @@ int calcLis(int ni, int mi)
         return ret;
 
     ret = 2;
-    int cur = std::max(nArr[ni], mArr[mi]);
+    long long cur = std::max(nArr[ni], mArr[mi]);
 
     FOR(nxt, ni + 1, N + 1)
     if (nArr[nxt] > cur)
