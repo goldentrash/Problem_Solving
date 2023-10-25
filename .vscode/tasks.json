@@ -25,8 +25,28 @@
         "focus": true,
         "panel": "shared",
         "showReuseMessage": true,
-        "clear": false
+        "clear": true
       }
+    },
+    {
+      "type": "shell",
+      "label": "test active cpp solution",
+      "command": "${workspaceFolder}/test.sh",
+      "args": ["${fileDirname}"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": ["build active cpp solution"]
     }
   ],
   "version": "2.0.0"
