@@ -1,68 +1,85 @@
-#!/bin/bash
+#! /bin/bash
 
-if [ -z `command -v curl` ]
-then
-  1>&2 echo "plz install curl and try again"
-  exit 1
-fi
+CODE_FORCES() {
+  CONTEST=$1
+  PROBLEM=$2
 
-if [ -z `command -v xmllint` ]
-then
-  1>&2 echo "plz install xmllint and try again"
-  exit 1
-fi
+  # Fetch examples
+  SOURCE="https://codeforces.com/problemset/problem/$CONTEST/$PROBLEM"
+  EXAMPLES=$(
+    curl $SOURCE \
+      | xmllint --html --xpath //div[@class=\"sample-test\"] - 2> /dev/null
+  )
 
-CF()
-{
-  SOURCE="https://codeforces.com/problemset/problem/$1/$2"
-  EXAMPLES=`curl ${SOURCE} | \
-    xmllint --html --xpath //div[@class=\"sample-test\"] - 2>/dev/null`
-  
-  if [ -z "$EXAMPLES" ]
-  then
-    1>&2 echo "there's no data. Are you sure it's $1/$2?"
+  # Error if no data
+  if [ -z "$EXAMPLES" ]; then
+    echo 1>&2 "there's no data. Are you sure it's $CONTEST/$PROBLEM?"
     exit 2
   fi
 
-  if [ ! -d $2$1 ]
-  then
-    mkdir $2$1
-  fi
+  # Check how many examples are provided
+  CNT=$(
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "count(//div[@class=\"input\"])" - 2> /dev/null
+  )
 
-  CNT=`echo "$EXAMPLES" | xmllint --html --xpath "count(//div[@class=\"input\"])" - 2>/dev/null`
+  # Write examples (input & output)
+  while [ $CNT -gt 0 ]; do
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "//div[@class=\"input\"][$CNT]/pre" - 2> /dev/null \
+      | sed --regexp-extended "s/<\/?pre>|<div[^>]*>//g" \
+      | sed --regexp-extended "s/<br\/>|<\/div>/\\n/g" \
+        > "./input$CNT.text"
 
-  while [ $CNT -gt 0 ]
-  do
-    echo "$EXAMPLES" | \
-      xmllint --html --xpath "//div[@class=\"input\"][$CNT]/pre" - 2>/dev/null | \
-      sed -r "s/<\/?pre>|<div[^>]*>//g" | \
-      sed -r "s/<br\/>|<\/div>/\\n/g" \
-    > ./$2$1/input$CNT.txt 
-    truncate -s -1 ./$2$1/input$CNT.txt
+    echo "$EXAMPLES" \
+      | xmllint --html --xpath "//div[@class=\"output\"][$CNT]/pre" - 2> /dev/null \
+      | sed "s/<\/\?pre>//g" \
+      | sed "s/<br\/>/\\n/g" \
+        > "./output$CNT.text"
 
-    echo "$EXAMPLES" | \
-      xmllint --html --xpath "//div[@class=\"output\"][$CNT]/pre" - 2>/dev/null | \
-      sed "s/<\/\?pre>//g" | \
-      sed "s/<br\/>/\\n/g" \
-      > ./$2$1/output$CNT.txt
-    truncate -s -1 ./$2$1/output$CNT.txt
-
-    CNT=`expr $CNT - 1`
+    CNT=$(expr $CNT - 1)
   done
 
-  cat ./$2$1/input1.txt > $2$1/input.txt
-  echo "// $SOURCE" > ./$2$1/solution.cpp
+  cat ./input1.text > ./input.text
+  echo "// $SOURCE" > ./solution.cpp
 }
 
+##################################### PROCESS #####################################
+
+# Check Dependencies
+echo "Check Dependencies"
+if [ -z $(command -v curl) ]; then
+  echo 1>&2 "plz install curl and try again"
+  exit 1
+fi
+if [ -z $(command -v xmllint) ]; then
+  echo 1>&2 "plz install xmllint and try again"
+  exit 1
+fi
+echo
+
+# Clear examples (input & output)
+echo "Clear Examples (Input & Output)"
+CNT=1
+while [ -f "./input$CNT.text" ]; do
+  rm ./input$CNT.text ./output$CNT.text
+
+  CNT=$(expr $CNT + 1)
+done
+echo
+
 # only codeforces is supported yet
-case $1 in
+echo "Fetch Examples"
+PLATFORM=$1
+case $PLATFORM in
   cf)
-    CF $2 $3
+    CODE_FORCES $2 $3
     ;;
   *)
-    1>&2 echo "Unknown Platform"
+    echo 1>&2 "Unknown Platform"
     exit 2
-      ;;
+    ;;
 esac
+echo
 
 exit 0

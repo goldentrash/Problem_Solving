@@ -1,15 +1,25 @@
-#!/bin/sh
+#! /bin/sh
 
 CNT=1
-while [ -f "$1/input$CNT.txt" ]
-do
-  RET=`"$1/solution" < "$1/input$CNT.txt" | \
-    diff -b "$1/output$CNT.txt" -`
+RET=0
+while [ -f "./input$CNT.text" ]; do
+  RET=$(
+    "./solution" < "./input$CNT.text" \
+      | diff --ignore-space-change "./output$CNT.text" -
+  )
 
-  [ -z "$RET" ] && echo "clear case $CNT!" || echo "fail case $CNT\r\n$RET"
-  echo
+  if [ -z $RET ]; then
+    echo "PASS $CNT"
+    echo
+  else
+    echo "FAIL $CNT"
+    echo $RET
+    echo
 
-  CNT=`expr $CNT + 1`
+    RET=1
+  fi
+
+  CNT=$(expr $CNT + 1)
 done
 
-exit 0
+exit $RET
