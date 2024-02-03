@@ -45,8 +45,8 @@ BAEKJOON() {
 }
 
 CODE_FORCES() {
-  CONTEST=$1
-  PROBLEM=$2
+  PROBLEM=${1:0:1}
+  CONTEST=${1:1}
 
   # Fetch examples
   SOURCE="https://codeforces.com/problemset/problem/$CONTEST/$PROBLEM"
@@ -118,7 +118,7 @@ echo "Fetch Examples"
 PLATFORM=$1
 case $PLATFORM in
   cf)
-    CODE_FORCES $2 $3
+    CODE_FORCES $2
     ;;
   boj)
     BAEKJOON $2

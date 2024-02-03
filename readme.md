@@ -2,31 +2,28 @@
 
 ## Usage
 
-### codeforces
-
-`$ ./ready.sh cf 721 c`
-
-### baekjoon
-
-`$ ./ready.sh boj 29156`
-
-## Recommendations
-
-### shortcut
+### (Recommendations) Shortcut
 
 highly recommend using shourtcut to test your solution.
 
 ```cpp
 // vscode keybindings.json
 [
-  {
-    "key": "ctrl+t",
-    "command": "workbench.action.tasks.runTask",
-    "args": "test active cpp solution"
-  }
+    {
+        "key": "ctrl+t",
+        "command": "workbench.action.tasks.runTask",
+    }
 ]
 
 ```
+
+### Example 1. codeforces
+
+`$ scripts/ready.sh cf c721`
+
+### Example 2. baekjoon
+
+`$ scripts/ready.sh boj 29156`
 
 ## Online Judge Site Profiles
 

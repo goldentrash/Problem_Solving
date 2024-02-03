@@ -1,4 +1,5 @@
 {
+  "version": "2.0.0",
   "tasks": [
     {
       "type": "cppbuild",
@@ -7,14 +8,13 @@
       "args": [
         "-fdiagnostics-color=always",
         "-g",
-        "${file}",
+        "${workspaceFolder}/solution.cpp",
         "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
+        "${workspaceFolder}/${fileBasenameNoExtension}"
       ],
-      "options": {
-        "cwd": "${fileDirname}"
-      },
-      "problemMatcher": ["$gcc"],
+      "problemMatcher": [
+        "$gcc"
+      ],
       "group": {
         "kind": "build",
         "isDefault": true
@@ -31,8 +31,10 @@
     {
       "type": "shell",
       "label": "test active cpp solution",
-      "command": "${workspaceFolder}/test.sh",
-      "args": ["${fileDirname}"],
+      "command": "${workspaceFolder}/scripts/test.sh",
+      "args": [
+        "${workspaceFolder}"
+      ],
       "group": {
         "kind": "test",
         "isDefault": true
@@ -46,8 +48,43 @@
         "clear": true
       },
       "dependsOrder": "sequence",
-      "dependsOn": ["build active cpp solution"]
+      "dependsOn": [
+        "build active cpp solution"
+      ]
+    },
+    {
+      "type": "shell",
+      "label": "ready to solve",
+      "command": "${workspaceFolder}/scripts/ready.sh",
+      "args": [
+        "${input:platformSelector}",
+        "${input:problemSelector}"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
     }
   ],
-  "version": "2.0.0"
+  "inputs": [
+    {
+      "id": "platformSelector",
+      "type": "pickString",
+      "description": "Which platform will you use? (`cf` or `boj`)",
+      "options": [
+        "cf",
+        "boj"
+      ],
+    },
+    {
+      "id": "problemSelector",
+      "type": "promptString",
+      "description": "Which problem will you challenge? (`c721` or `29156`)",
+    }
+  ]
 }

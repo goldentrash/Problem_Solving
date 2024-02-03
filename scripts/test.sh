@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 CNT=1
 RET=0
