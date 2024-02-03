@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1
+
+FROM ubuntu:20.04
+
+# Configure Timezone
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Seoul
+
+# Configure user
+RUN adduser ps
+
+# Configure locale
+RUN apt clean && apt update \
+  && apt install -y locales \
+  && locale-gen en_US.UTF-8
+
+# Install dependencies
+RUN apt clean && apt update \
+  && apt install -y curl libxml2-utils build-essential git
+
+CMD ["/bin/bash"]

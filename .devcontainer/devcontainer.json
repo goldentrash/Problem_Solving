@@ -1,0 +1,19 @@
+{
+  "name": "ps",
+  "containerUser": "ps",
+  "build": {
+    "dockerfile": "./dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/home/ps/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools-extension-pack",
+        "donjayamanne.githistory",
+        "oderwat.indent-rainbow"
+      ]
+    }
+  }
+}
