@@ -1,5 +1,9 @@
 {
   "name": "ps",
+  "runArgs": [
+    "--name",
+    "ps"
+  ],
   "containerUser": "ps",
   "build": {
     "dockerfile": "./dockerfile",
